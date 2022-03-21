@@ -1,0 +1,15 @@
+﻿@model RegistrationsApp.Dtos.DisplayAll
+
+<table class="table">
+    <tr>
+        <th>Registration name</th>
+        <th>Action</th>
+    </tr>
+    @foreach(var reg in Model.RegsIds)
+    {
+        <tr>
+            <td>Registration #@reg</td>
+            <td>@Html.ActionLink("Update", "Update", "Registration", new {regId = reg })</td>
+        </tr>
+    }
+</table>

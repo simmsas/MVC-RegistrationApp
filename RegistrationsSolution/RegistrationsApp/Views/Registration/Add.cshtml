@@ -1,0 +1,54 @@
+﻿@model RegistrationsApp.Dtos.Registration
+
+<script src="~/js/toggleDropdowns.js"></script>
+@using (Html.BeginForm("Add", "Registration", FormMethod.Post))
+{
+    <div class="row">
+        <div class="table-responsive col-md-6 p-0">
+            <table class="table table-bordered">
+                <tr class="table-info">
+                    <th>Registracijos požymiai</th>
+                </tr>
+                @for(int i = 0; i < Model.Attributes.Count; i++)
+                {
+                    <tr style="height: 63px">
+                        <td style="vertical-align: middle">@Model.Attributes[i].Name</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="table-responsive col-md-6 p-0">
+            <table class="table table-bordered">
+                <tr class="table-info">
+                    <th>Reikšmė</th>
+                </tr>
+                @for (int i = 0; i < Model.Attributes.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @if (Model.Attributes[i].RegistrationValues.Count > 0)
+                            {
+                                @Html.DropDownListFor(a => a.SelectedValuesIds[i]
+                                    , new SelectList(@Model.Attributes[i].RegistrationValues, "Id", "Name")
+                                    , new { @class = "form-control w-50", @disabled = "disabled" })
+                            }
+                            else
+                            {
+                                @Html.DropDownList("Empty", Enumerable.Empty<SelectListItem>(), ""
+                               , new { @class = "form-control w-50", @disabled = "disabled" })
+                                @Html.HiddenFor(a => a.SelectedValuesIds[i], new {Value = 0})
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div style="display: none">
+        @Html.EditorFor(m => m.AttributesIds)
+    </div>
+    <div>
+        <input type="button" id="toggle" class="btn btn-warning" value="Koreguoti požymius" onclick="toggleDropDowns()" />
+        <input type="submit" id="withToggle" value="Pridėti registraciją" class="btn btn-info" disabled="disabled"/>
+    </div>
+}
